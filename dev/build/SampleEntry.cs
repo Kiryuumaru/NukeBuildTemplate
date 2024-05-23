@@ -1,6 +1,7 @@
 ﻿using NukeBuildHelpers;
 using NukeBuildHelpers.Attributes;
 using NukeBuildHelpers.Enums;
+using NukeBuildHelpers.Models.RunContext;
 
 namespace _build;
 
@@ -15,12 +16,12 @@ public class SampleEntry : AppEntry<Build>
     [SecretHelper("GITHUB_TOKEN")]
     readonly string GithubToken;
 
-    public override void Build()
+    public override void Build(AppRunContext appRunContext)
     {
 
     }
 
-    public override void Publish()
+    public override void Publish(AppRunContext appRunContext)
     {
 
     }

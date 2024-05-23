@@ -1,6 +1,7 @@
 ﻿using System;
 using NukeBuildHelpers;
 using NukeBuildHelpers.Enums;
+using NukeBuildHelpers.Models.RunContext;
 
 namespace _build;
 
@@ -12,7 +13,7 @@ public class SampleTestEntry : AppTestEntry<Build>
 
     public override Type[] AppEntryTargets => [typeof(SampleEntry)];
 
-    public override void Run()
+    public override void Run(AppTestRunContext appTestContext)
     {
 
     }
