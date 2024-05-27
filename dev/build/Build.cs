@@ -1,6 +1,6 @@
 using NukeBuildHelpers;
 
-public class Build : BaseNukeBuildHelpers
+class Build : BaseNukeBuildHelpers
 {
     public static int Main() => Execute<Build>(x => x.Version);
 

@@ -5,7 +5,7 @@ using NukeBuildHelpers.Models.RunContext;
 
 namespace _build;
 
-public class SampleTestEntry : AppTestEntry<Build>
+class SampleTestEntry : AppTestEntry<Build>
 {
     public override bool RunParallel => false;
 
