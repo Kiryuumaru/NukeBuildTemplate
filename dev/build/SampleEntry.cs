@@ -7,8 +7,6 @@ namespace _build;
 
 class SampleEntry : AppEntry<Build>
 {
-    public override bool RunParallel => false;
-
     public override RunsOnType BuildRunsOn => RunsOnType.Ubuntu2204;
 
     public override RunsOnType PublishRunsOn => RunsOnType.Ubuntu2204;
