@@ -77,6 +77,8 @@ NukeBuildTemplate is a project template repository for setting up build automati
             });
     }
     ```
+    
+    See documentation for [TestEntry](https://github.com/Kiryuumaru/NukeBuildHelpers/blob/main/docs/TestEntry.md), [BuildEntry](https://github.com/Kiryuumaru/NukeBuildHelpers/blob/main/docs/BuildEntry.md) and [PublishEntry](https://github.com/Kiryuumaru/NukeBuildHelpers/blob/main/docs/PublishEntry.md)
 
 ### Generating Workflows
 
