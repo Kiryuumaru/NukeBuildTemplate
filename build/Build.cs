@@ -15,20 +15,20 @@ class Build : BaseNukeBuildHelpers
     [SecretVariable("GITHUB_TOKEN")]
     readonly string GithubToken;
 
-    TestEntry TestEntry => _ => _
-        .AppId("sample_app")
-        .RunnerOS(RunnerOS.Ubuntu2204)
-        .Execute(() =>
-        {
-            // test logic here
-        });
-
     BuildEntry BuildEntry => _ => _
         .AppId("sample_app")
         .RunnerOS(RunnerOS.Windows2022)
         .Execute(() =>
         {
             // build logic here
+        });
+
+    TestEntry TestEntry => _ => _
+        .AppId("sample_app")
+        .RunnerOS(RunnerOS.Ubuntu2204)
+        .Execute(() =>
+        {
+            // test logic here
         });
 
     PublishEntry PublishEntry => _ => _
