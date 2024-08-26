@@ -30,6 +30,16 @@ NukeBuildTemplate is a project template repository for setting up build automati
     cd <your-repo>
     ```
 
+### Installing via One-Line Script
+
+For a fast installation, you can also use the following one-liner in windows cmd or powershell:
+
+```cmd
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell -c "& ([ScriptBlock]::Create((irm https://raw.githubusercontent.com/Kiryuumaru/NukeBuildTemplate/main/init.ps1)))"
+```
+
+## Usage
+
 ### Configuring Your `Build.cs`
 
 1. Define Environment Branches
