@@ -13,7 +13,7 @@ class Build : BaseNukeBuildHelpers
     public override string MainEnvironmentBranch => "master";
 
     [SecretVariable("GITHUB_TOKEN")]
-    readonly string GithubToken;
+    readonly string? GithubToken;
 
     BuildEntry BuildEntry => _ => _
         .AppId("sample_app")
