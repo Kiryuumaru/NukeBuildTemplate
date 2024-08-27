@@ -2,6 +2,7 @@
 Set-StrictMode -Version 2.0; $ErrorActionPreference = "Stop"; $ConfirmPreference = "None"; trap { Write-Error $_ -ErrorAction Continue; exit 1 }
 
 $Root = (Get-Item .).FullName
+$SolutionName = (Get-Item "$Root").Name
 $NukeBuildTemplatePath = "$Root/.nuke/temp/NukeBuildTemplate"
 
 if (Test-Path $NukeBuildTemplatePath){
@@ -20,5 +21,5 @@ $slnFiles = Get-ChildItem -Path "$Root" -Filter "*.sln" -File
 if ($slnFiles) {
 	dotnet sln add "$Root/build/_build.csproj"
 } else {
-	Copy-Item -Force "$NukeBuildTemplatePath/solution.sln" "$Root/solution.sln"
+	Copy-Item -Force "$NukeBuildTemplatePath/solution.sln" "$Root/$SolutionName.sln"
 }
