@@ -34,9 +34,13 @@ NukeBuildTemplate is a project template repository for setting up build automati
 
 For a fast installation, you can also use the following one-liner in windows cmd or powershell:
 
-```cmd
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell -c "& ([ScriptBlock]::Create((irm https://raw.githubusercontent.com/Kiryuumaru/NukeBuildTemplate/main/init.ps1)))"
-```
+1. Open either cmd or powershell
+2. Navigate to your project directory
+3. Paste the command:
+
+    ```
+    C:\Windows\System32\WindowsPowerShell\v1.0\powershell -c "& ([ScriptBlock]::Create((irm https://raw.githubusercontent.com/Kiryuumaru/NukeBuildTemplate/main/init.ps1)))"
+    ```
 
 ## Usage
 
