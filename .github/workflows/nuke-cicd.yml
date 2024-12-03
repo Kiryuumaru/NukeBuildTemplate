@@ -1,0 +1,199 @@
+name: Nuke CICD Pipeline
+on:
+  push:
+    branches:
+    - prerelease
+    - master
+    tags:
+    - bump-*
+  pull_request:
+    branches:
+    - '**'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  PRE_SETUP:
+    name: Pre Setup
+    runs-on:
+      labels: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true
+        submodules: recursive
+        persist-credentials: true
+    - id: NUKE_RUN
+      name: Run Nuke PipelinePreSetup
+      run: chmod +x ./build.sh && ./build.sh PipelinePreSetup
+    timeout-minutes: 30
+    outputs:
+      NUKE_PRE_SETUP: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP }}
+      NUKE_PRE_SETUP_OUTPUT_TEST_MATRIX: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_OUTPUT_TEST_MATRIX }}
+      NUKE_PRE_SETUP_OUTPUT_BUILD_MATRIX: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_OUTPUT_BUILD_MATRIX }}
+      NUKE_PRE_SETUP_OUTPUT_PUBLISH_MATRIX: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_OUTPUT_PUBLISH_MATRIX }}
+      NUKE_PRE_SETUP_BUILDENTRY_CONDITION: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CONDITION }}
+      NUKE_PRE_SETUP_BUILDENTRY_RUNS_ON: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_RUNS_ON }}
+      NUKE_PRE_SETUP_BUILDENTRY_RUN_SCRIPT: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_RUN_SCRIPT }}
+      NUKE_PRE_SETUP_BUILDENTRY_CACHE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_KEY }}
+      NUKE_PRE_SETUP_BUILDENTRY_CACHE_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_RESTORE_KEY }}
+      NUKE_PRE_SETUP_BUILDENTRY_CACHE_MAIN_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_MAIN_RESTORE_KEY }}
+      NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_DEPTH: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_DEPTH }}
+      NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_TAGS: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_TAGS }}
+      NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_SUBMODULES: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_SUBMODULES }}
+      NUKE_PRE_SETUP_TESTENTRY_CONDITION: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CONDITION }}
+      NUKE_PRE_SETUP_TESTENTRY_RUNS_ON: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_RUNS_ON }}
+      NUKE_PRE_SETUP_TESTENTRY_RUN_SCRIPT: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_RUN_SCRIPT }}
+      NUKE_PRE_SETUP_TESTENTRY_CACHE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_KEY }}
+      NUKE_PRE_SETUP_TESTENTRY_CACHE_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_RESTORE_KEY }}
+      NUKE_PRE_SETUP_TESTENTRY_CACHE_MAIN_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_MAIN_RESTORE_KEY }}
+      NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_DEPTH: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_DEPTH }}
+      NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_TAGS: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_TAGS }}
+      NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_SUBMODULES: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_SUBMODULES }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CONDITION: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CONDITION }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_RUNS_ON: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_RUNS_ON }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_RUN_SCRIPT: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_RUN_SCRIPT }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_KEY }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_RESTORE_KEY }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_MAIN_RESTORE_KEY: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_MAIN_RESTORE_KEY }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_DEPTH: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_DEPTH }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_TAGS: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_TAGS }}
+      NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_SUBMODULES: ${{ steps.NUKE_RUN.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_SUBMODULES }}
+  BUILDENTRY:
+    name: Build - sample_app (BuildEntry)
+    runs-on: ${{ fromJson(needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_RUNS_ON) }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_DEPTH }}
+        fetch-tags: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_FETCH_TAGS }}
+        submodules: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CHECKOUT_SUBMODULES }}
+        persist-credentials: true
+    - name: Cache Run
+      uses: actions/cache@v4
+      with:
+        path: ./.nuke/temp/cache
+        key: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_KEY }}
+        restore-keys: |-
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_RESTORE_KEY }}
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CACHE_MAIN_RESTORE_KEY }}
+    - id: NUKE_RUN
+      name: Run Nuke BuildEntry
+      run: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_RUN_SCRIPT }} Run --args "BuildEntry"
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build___sample_app___BUILDENTRY
+        path: ./.nuke/temp/artifacts-upload/*
+        if-no-files-found: error
+        retention-days: 1
+    needs:
+    - PRE_SETUP
+    if: "! failure() && ! cancelled() && needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_BUILDENTRY_CONDITION == 'true'"
+    env:
+      NUKE_PRE_SETUP: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP }}
+  TESTENTRY:
+    name: Test - sample_app (TestEntry)
+    runs-on: ${{ fromJson(needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_RUNS_ON) }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_DEPTH }}
+        fetch-tags: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_FETCH_TAGS }}
+        submodules: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CHECKOUT_SUBMODULES }}
+        persist-credentials: true
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./.nuke/temp/artifacts-download
+    - name: Cache Run
+      uses: actions/cache@v4
+      with:
+        path: ./.nuke/temp/cache
+        key: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_KEY }}
+        restore-keys: |-
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_RESTORE_KEY }}
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CACHE_MAIN_RESTORE_KEY }}
+    - id: NUKE_RUN
+      name: Run Nuke TestEntry
+      run: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_RUN_SCRIPT }} Run --args "TestEntry"
+    needs:
+    - PRE_SETUP
+    - BUILDENTRY
+    if: "! failure() && ! cancelled() && needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_TESTENTRY_CONDITION == 'true' && needs.BUILDENTRY.result == 'success'"
+    env:
+      NUKE_PRE_SETUP: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP }}
+  PUBLISHENTRY:
+    name: Publish - sample_app (PublishEntry)
+    runs-on: ${{ fromJson(needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_RUNS_ON) }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_DEPTH }}
+        fetch-tags: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_FETCH_TAGS }}
+        submodules: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CHECKOUT_SUBMODULES }}
+        persist-credentials: true
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./.nuke/temp/artifacts-download
+        pattern: build___sample_app___*
+    - name: Cache Run
+      uses: actions/cache@v4
+      with:
+        path: ./.nuke/temp/cache
+        key: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_KEY }}
+        restore-keys: |-
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_RESTORE_KEY }}
+          ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CACHE_MAIN_RESTORE_KEY }}
+    - id: NUKE_RUN
+      name: Run Nuke PublishEntry
+      run: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_RUN_SCRIPT }} Run --args "PublishEntry"
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: publish___sample_app___PUBLISHENTRY
+        path: ./.nuke/temp/artifacts-upload/*
+        if-no-files-found: error
+        retention-days: 1
+    needs:
+    - PRE_SETUP
+    - BUILDENTRY
+    - TESTENTRY
+    if: "! failure() && ! cancelled() && needs.PRE_SETUP.outputs.NUKE_PRE_SETUP_PUBLISHENTRY_CONDITION == 'true' && needs.BUILDENTRY.result == 'success' && needs.TESTENTRY.result == 'success'"
+    env:
+      NUKE_PRE_SETUP: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP }}
+  POST_SETUP:
+    name: Post Setup
+    runs-on:
+      labels: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true
+        submodules: recursive
+        persist-credentials: true
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: ./.nuke/temp/artifacts-download
+        pattern: publish___*
+    - name: Run Nuke PipelinePostSetup
+      run: chmod +x ./build.sh && ./build.sh PipelinePostSetup
+    needs:
+    - PRE_SETUP
+    - BUILDENTRY
+    - TESTENTRY
+    - PUBLISHENTRY
+    if: success() || failure() || always()
+    timeout-minutes: 30
+    env:
+      NUKE_PRE_SETUP: ${{ needs.PRE_SETUP.outputs.NUKE_PRE_SETUP }}
+      NUKE_RUN_RESULT_GITHUB_BUILDENTRY: ${{ needs.BUILDENTRY.result }}
+      NUKE_RUN_RESULT_GITHUB_TESTENTRY: ${{ needs.TESTENTRY.result }}
+      NUKE_RUN_RESULT_GITHUB_PUBLISHENTRY: ${{ needs.PUBLISHENTRY.result }}
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  NUKE_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
