@@ -36,7 +36,16 @@ else
     # Download install script
     DOTNET_INSTALL_FILE="$TEMP_DIRECTORY/dotnet-install.sh"
     mkdir -p "$TEMP_DIRECTORY"
-    curl -Lsfo "$DOTNET_INSTALL_FILE" "$DOTNET_INSTALL_URL"
+
+    RETRY_TIMES=10
+    DELAY_SECONDS=5
+    for i in $(seq 1 $RETRY_TIMES); do
+        curl -Lsfo "$DOTNET_INSTALL_FILE" "$DOTNET_INSTALL_URL" && break
+        echo "Attempt $i/$RETRY_TIMES: Download of .NET installer failed. Retrying in $DELAY_SECONDS seconds..."
+        sleep $DELAY_SECONDS
+    done || { echo "Failed to download .NET installer after $RETRY_TIMES attempts."; exit 1; }
+    echo "Successfully downloaded .NET installer."
+
     chmod +x "$DOTNET_INSTALL_FILE"
 
     # If global.json exists, load expected version

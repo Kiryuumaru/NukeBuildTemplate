@@ -43,7 +43,23 @@ else {
     $DotNetInstallFile = "$TempDirectory\dotnet-install.ps1"
     New-Item -ItemType Directory -Path $TempDirectory -Force | Out-Null
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    (New-Object System.Net.WebClient).DownloadFile($DotNetInstallUrl, $DotNetInstallFile)
+
+    $MaxRetries = 10
+    $RetryDelay = 5
+    for ($i = 1; $i -le $MaxRetries; $i++) {
+        try {
+            (New-Object System.Net.WebClient).DownloadFile($DotNetInstallUrl, $DotNetInstallFile)
+            Write-Host "Successfully downloaded .NET installer."
+            break
+        } catch {
+            Write-Host "Attempt $i/$MaxRetries: Download of .NET installer failed. Retrying in $RetryDelay seconds..."
+            Start-Sleep -Seconds $RetryDelay
+        }
+    }
+    if ($i -gt $MaxRetries) {
+        Write-Host "Failed to download .NET installer after $MaxRetries attempts." -ForegroundColor Red
+        exit 1
+    }
 
     # If global.json exists, load expected version
     if (Test-Path $DotNetGlobalFile) {
