@@ -52,7 +52,7 @@ else {
             Write-Host "Successfully downloaded .NET installer."
             break
         } catch {
-            Write-Host "Attempt $i/$MaxRetries: Download of .NET installer failed. Retrying in $RetryDelay seconds..."
+            Write-Host "Attempt ${i}/${MaxRetries}: Download of .NET installer failed. Retrying in $RetryDelay seconds..."
             Start-Sleep -Seconds $RetryDelay
         }
     }
