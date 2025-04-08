@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -15,7 +15,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Nuke.Common" Version="9.0.4" />
-		<PackageReference Include="NukeBuildHelpers" Version="7.0.22" />
+		<PackageReference Include="NukeBuildHelpers" Version="7.0.24" />
 	</ItemGroup>
 
 </Project>
