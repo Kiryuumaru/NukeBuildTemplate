@@ -19,7 +19,7 @@ Copy-Item -Force "$NukeBuildTemplatePath/global.json" "$Root/global.json"
 
 $slnFiles = Get-ChildItem -Path "$Root" -Filter "*.sln" -File
 if ($slnFiles) {
-	dotnet sln add "$Root/build/_build.csproj"
+	dotnet sln add "$Root/build/_build.csproj" --in-root
 } else {
 	Copy-Item -Force "$NukeBuildTemplatePath/solution.sln" "$Root/$SolutionName.sln"
 }
